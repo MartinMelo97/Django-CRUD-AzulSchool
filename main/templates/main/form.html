@@ -2,14 +2,14 @@
 
 {% block content %}
     <form action="
-        {% if user %}
+        {% if action == 'update' %}
             /main/update/{{ user.id }}/
         {% else %}
             /main/create/
         {% endif %}"
     method="POST">
         {% csrf_token %}
-        <label for="first_name">Tu(s) nombre(s)</label>
+        {% comment %} <label for="first_name">Tu(s) nombre(s)</label>
         <input type="text" id="first_name" name="first_name" placeholder="Tu nombre" value="{% if user %}{{ user.first_name }}{% endif %}" required>
         <br>
         <label for="last_name">Tus apellidos</label>
@@ -30,7 +30,8 @@
         </select>
         <br>
         <label for="date_birth">Tu fecha de nacimiento</label>
-        <input type="text" id="date_birth" name="date_birth" placeholder="AAAA-MM-DD" value="{% if user and user.date_birth %}{{ user.date_birth|date:'Y-m-d' }}{% endif %}">
-        <input type="submit" value="Guardar">
+        <input type="text" id="date_birth" name="date_birth" placeholder="AAAA-MM-DD" value="{% if user and user.date_birth %}{{ user.date_birth|date:'Y-m-d' }}{% endif %}"> {% endcomment %}
+        {{ form.as_p }}
+        <input type="submit" value="{% if action == 'create' %} Guardar {% else %} Actualizar {%endif%}">
     </form>
 {% endblock content %}
