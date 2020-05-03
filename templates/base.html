@@ -14,5 +14,15 @@
     {% block content %}
     {% endblock content %}
 
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <p> <b>ERROR: </b>{{ message }}</p>
+            {% else %}
+                <p>{{ message }}</p>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
 </body>
 </html>

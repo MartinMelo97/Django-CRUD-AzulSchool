@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django import views
 from .models import UserModel
 from .forms import UserForm
+from django.contrib import messages
 
 class GetUsersView (views.View):
     def get(self, request):
@@ -56,6 +57,7 @@ class CreateUserView(views.View):
         if new_form.is_valid():
             form_data = new_form.save(commit=False)
             form_data.save()
+            messages.success(request, 'Usuario creado exitósamente!')
             return redirect('/main')
         else:
             errors = new_form.errors.as_data()
@@ -65,6 +67,7 @@ class CreateUserView(views.View):
                 'form': form,
                 'action': self.action
             }
+            messages.error(request, 'Algo falló al momento de crear un usuario')
             return render(request, self.template_name, context)
 
 class UpdateUserView(views.View):
@@ -94,6 +97,7 @@ class UpdateUserView(views.View):
         if edit_form.is_valid():
             form_data = edit_form.save(commit=False)
             form_data.save()
+            messages.success(request, 'Usuario actualizado exitósamente!')
             return redirect('/main/' + str(id))
         else:
             errors = edit_form.errors.as_data()
@@ -104,10 +108,12 @@ class UpdateUserView(views.View):
                 'action': self.action,
                 'user': user
             }
+            messages.error(request, 'Algo falló al editar la información del usuario')
             return render(request, self.template_name, context)
 
 def DeleteUserView(request, id):
     user = UserModel.objects.get(id=id)
     user.delete()
+    messages.success(request, 'Usuario eliminado')
 
     return redirect('/main/')
