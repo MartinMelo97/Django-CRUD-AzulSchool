@@ -4,7 +4,7 @@
     <h1>Usuarios registrados</h1>
     <ul>
         {% for user in users %}
-            <a href="/main/{{ user.id }}">
+            <a href="{% url 'user:detail' user.id %}">
                 <li>{{ user.first_name }} {{ user.last_name }} - {{ user.email }}</li>
             </a>
         {% endfor %}

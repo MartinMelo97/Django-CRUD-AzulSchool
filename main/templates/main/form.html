@@ -3,34 +3,12 @@
 {% block content %}
     <form action="
         {% if action == 'update' %}
-            /main/update/{{ user.id }}/
+            {% url 'user:update' user.id%}
         {% else %}
-            /main/create/
+            {% url 'user:create' %}
         {% endif %}"
     method="POST">
         {% csrf_token %}
-        {% comment %} <label for="first_name">Tu(s) nombre(s)</label>
-        <input type="text" id="first_name" name="first_name" placeholder="Tu nombre" value="{% if user %}{{ user.first_name }}{% endif %}" required>
-        <br>
-        <label for="last_name">Tus apellidos</label>
-        <input type="text" id="last_name" name="last_name" placeholder="Tus apellidos" value="{% if user %}{{ user.last_name }}{% endif %}" required>
-        <br>
-        <label for="email">Tu correo electrónico</label>
-        <input type="text" id="email" name="email" placeholder="example@gmail.com" value="{% if user %}{{ user.email }}{% endif %}" required>
-        <br>
-        <label for="phone_number">Tu número telefónico</label>
-        <input type="text" id="phone_number" name="phone_number" placeholder="55 55 55 55 55" value="{% if user %}{{ user.phone_number }}{% endif %}" required>
-        <br>
-        <label for="gender">Género</label>
-        <select name="gender" id="gender" required>
-            <option value="">Selecciona tu género</option>
-            <option value="male" {% if user and user.gender == 'male' %} selected="selected" {% endif %}>Masculino</option>
-            <option value="female" {% if user and user.gender == 'female' %} selected="selected" {% endif %}>Femenino</option>
-            <option value="other" {% if user and user.gender == 'other' %} selected="selected" {% endif %}>Otro</option>
-        </select>
-        <br>
-        <label for="date_birth">Tu fecha de nacimiento</label>
-        <input type="text" id="date_birth" name="date_birth" placeholder="AAAA-MM-DD" value="{% if user and user.date_birth %}{{ user.date_birth|date:'Y-m-d' }}{% endif %}"> {% endcomment %}
         {{ form.as_p }}
         <input type="submit" value="{% if action == 'create' %} Guardar {% else %} Actualizar {%endif%}">
     </form>
