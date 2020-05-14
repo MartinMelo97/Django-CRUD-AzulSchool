@@ -7,9 +7,10 @@
         {% else %}
             {% url 'user:create' %}
         {% endif %}"
-    method="POST">
+    method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ user_form.as_p }}
+        {{ profile_form.as_p }}
         <input type="submit" value="{% if action == 'create' %} Guardar {% else %} Actualizar {%endif%}">
     </form>
 {% endblock content %}
