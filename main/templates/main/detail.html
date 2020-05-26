@@ -18,6 +18,18 @@
     {% else %}
         <h3 style='color:red;'>PERFIL PRIVADO</h3>
     {% endif %}
+
+    <h3>Direcciones de envío registradas</h3>
+    {% if user.addresses.all|length > 0 %}
+        <ul>
+            {% for address in user.addresses.all %}
+                <li>{{address.street}} #{{address.external_number}}, {{ address.city}}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aún no tienes direcciones de envío registradas ☹️</p>
+    {% endif %}
+
     <a href="{% url 'user:update' user.id %}"><button>Editar usuario</button></a>
     <a href="{% url 'user:delete' user.id %}"><button>Eliminar usuario</button></a>
 {% endblock content %}
