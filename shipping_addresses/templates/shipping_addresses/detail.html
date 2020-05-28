@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Dirección de Envío #{{ address.id }}</h1>
+    <p>Calle: <b>{{ address.street }}</b></p>
+    <p>Número exterior: <b>{{ address.external_number }}</b></p>
+    {% if address.internal_number %}
+        <p>Número interior: <b>{{ address.internal_number}}</b></p>
+    {% endif %}
+    <p>Colonia: <b>{{ address.colony }}</b></p>
+    <p>Ciudad: <b>{{ address.city }}</b></p>
+    <p>Estado: <b>{{ address.state }}</b></p>
+    <p>País <b>{{ address.country }}</b></p>
+    <p>Código Postal: <b>{{ address.zip_code }}</b></p>
+    {% if address.references %}
+        <p>Referencias: {{ address.references }}</p>
+    {% endif %}
+{% endblock content %}

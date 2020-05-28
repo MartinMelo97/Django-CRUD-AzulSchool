@@ -20,10 +20,23 @@
     {% endif %}
 
     <h3>Direcciones de envío registradas</h3>
+    <a href="{% url 'addresses:create' user.id %}">
+        <button>Añadir nueva dirección de envío</button>
+    </a>
     {% if user.addresses.all|length > 0 %}
         <ul>
             {% for address in user.addresses.all %}
-                <li>{{address.street}} #{{address.external_number}}, {{ address.city}}</li>
+                <a href="{% url 'addresses:detail' address.id %}">
+                    <li>
+                        {{address.street}} #{{address.external_number}}, {{ address.city}}
+                        <a href="{% url 'addresses:update' address.id %}">
+                            <button>Editar</button>
+                        </a>
+                        <a href="{% url 'addresses:delete' address.id %}">
+                            <button>Eliminar</button>
+                        </a>
+                    </li>
+                </a>
             {% endfor %}
         </ul>
     {% else %}

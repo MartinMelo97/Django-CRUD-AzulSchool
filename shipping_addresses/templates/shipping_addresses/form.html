@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if action == 'create' %}
+    <h1>Agregar nueva dirección de envío</h1>
+    <p>Dirección a registrar para el usuario: <b>{{ user.full_name }}</b></p>
+    <form action="{% url 'addresses:create' user.id %}" method="POST">
+{% else %}
+    <h1>Editar dirección de envío #{{ address.id }}</h1>
+    <p>Dirección perteneciente al usuario <b>{{ user.full_name }}</b></p>
+    <form action="{% url 'addresses:update' address.id %}" method="POST">
+{% endif %}
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="{% if action == 'create' %}Agregar nueva dirección de envío{% else %}Actualizar datos{% endif %}">
+</form>
+{% endblock content %}
