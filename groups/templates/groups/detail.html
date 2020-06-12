@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1>{{ group.name }}</h1>
+    <h3>Descripción: {{ group.description }}</h3>
+    <h3>Usuarios:</h3>
+    <ul>
+        {% for user in group.users.all %}
+            <a href="{{ user.get_absolute_url }}"><li>{{ user.full_name }}</li></a>
+            <form action="{% url 'groups:delete_user' group.id %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="user_id" value="{{ user.id }}">
+                <input type="submit" value="Eliminar usuario">
+            </form>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'groups:update' group.id %}"><button>Editar grupo</button></a>
+
+{% endblock content %}

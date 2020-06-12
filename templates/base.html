@@ -7,8 +7,10 @@
 </head>
 <body>
     <ul>
-        <a href="/main"><li>Ver lista de usuarios</li></a>
-        <a href="/main/create"><li>Crear usuario</li></a>
+        <a href="{% url 'user:list' %}"><li>Ver lista de usuarios</li></a>
+        <a href="{% url 'user:create' %}"><li>Crear usuario</li></a>
+        <a href="{% url 'groups:list' %}"><li>Ver lista de grupos</li></a>
+        <a href="{% url 'groups:create' %}">Crear grupo</a>
     </ul>
 
     {% block content %}

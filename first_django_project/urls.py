@@ -19,10 +19,11 @@ from django.conf.urls.static import static
 from django.conf import settings
 from main import urls as main_urls
 from shipping_addresses import urls as addresses_urls
-
+from groups import urls as groups_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('main/', include(main_urls, namespace='user')),
-    path('addresses/', include(addresses_urls, namespace='addresses'))
+    path('addresses/', include(addresses_urls, namespace='addresses')),
+    path('groups/', include(groups_urls, namespace='groups'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

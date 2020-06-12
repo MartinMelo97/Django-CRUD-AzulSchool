@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form
+        action="{% if action == 'create' %}
+                {% url 'groups:create' %}
+            {% else %}
+                {% url 'groups:update' group.id %}
+            {% endif %}"
+        method="POST"
+    >
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input
+            type="submit"
+            value="{% if action == 'create' %}Crear grupo {% else %} Guardar cambios {% endif %}"
+        >
+    </form>
+{% endblock content %}

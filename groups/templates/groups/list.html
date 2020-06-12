@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1>Grupos registrados</h1>
+
+    {% for group in groups %}
+        <a href="{{ group.get_absolute_url }}"><h3>{{ group.name }}</h3></a>
+    {% endfor %}
+
+{% endblock content %}

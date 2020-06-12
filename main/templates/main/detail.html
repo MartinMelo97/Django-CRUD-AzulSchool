@@ -43,6 +43,18 @@
         <p>Aún no tienes direcciones de envío registradas ☹️</p>
     {% endif %}
 
+    <h3>Grupos a los que pertenece</h3>
+
+    {% if user.groups.all|length > 0 %}
+        <ul>
+        {% for group in user.groups.all %}
+            <a href="{{ group.get_absolute_url }}"><li>{{ group.name }}</li></a>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <h5>Este usuario no pertenece a ningún grupo</h5>
+    {% endif %}
+
     <a href="{% url 'user:update' user.id %}"><button>Editar usuario</button></a>
     <a href="{% url 'user:delete' user.id %}"><button>Eliminar usuario</button></a>
 {% endblock content %}
