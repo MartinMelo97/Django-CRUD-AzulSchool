@@ -11,6 +11,21 @@
         {% csrf_token %}
         {{ user_form.as_p }}
         {{ profile_form.as_p }}
+        <label for="groups">Elige los grupos: </label>
+        <select name="groups" id="groups" multiple>
+            {% if action == 'create' %}
+                {% for group in groups %}
+                    <option value="{{ group.id }}">{{ group.name }}</option>
+                {% endfor %}
+            {% else %}
+                {% for group in user_groups %}
+                    <option value="{{ group.id }}" selected>{{ group.name }}</option>
+                {% endfor %}
+                {% for group in not_user_groups %}
+                    <option value="{{ group.id }}">{{ group.name }}</option>
+                {% endfor %}
+            {% endif %}
+        </select>
         <input type="submit" value="{% if action == 'create' %} Guardar {% else %} Actualizar {%endif%}">
     </form>
 {% endblock content %}

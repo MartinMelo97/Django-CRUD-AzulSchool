@@ -8,14 +8,15 @@
     <ul>
         {% for user in group.users.all %}
             <a href="{{ user.get_absolute_url }}"><li>{{ user.full_name }}</li></a>
-            <form action="{% url 'groups:delete_user' group.id %}" method="POST">
+            <form action="{% url 'groups:remove_user' group.id %}" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="user_id" value="{{ user.id }}">
-                <input type="submit" value="Eliminar usuario">
+                <input type="submit" value="Remover usuario">
             </form>
         {% endfor %}
     </ul>
 
     <a href="{% url 'groups:update' group.id %}"><button>Editar grupo</button></a>
+    <a href="{% url 'groups:delete' group.id %}"><button>Eliminar grupo</button></a>
 
 {% endblock content %}

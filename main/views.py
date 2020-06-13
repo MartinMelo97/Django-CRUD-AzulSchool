@@ -3,6 +3,7 @@ from django import views
 from .models import UserModel
 from .forms import UserForm, ProfileForm
 from django.contrib import messages
+from groups.models import Group
 
 class GetUsersView (views.View):
     def get(self, request):
@@ -27,10 +28,12 @@ class CreateUserView(views.View):
     def get(self, request):
         user_form = UserForm()
         profile_form = ProfileForm()
+        groups = Group.objects.all()
         context = {
             'user_form': user_form,
             'profile_form': profile_form,
-            'action': self.action
+            'action': self.action,
+            'groups': groups
         }
         return render(request, self.template_name, context)
 
@@ -42,6 +45,10 @@ class CreateUserView(views.View):
             profile_form_data = new_profile_form.save(commit=False)
             profile_form_data.user = user_form_data
             profile_form_data.save()
+            groups_id = request.POST.getlist('groups')
+            for group_id in groups_id:
+                group = Group.objects.get(pk=group_id)
+                user_form_data.groups.add(group)
             messages.success(request, 'Usuario creado exitósamente!')
             return redirect('user:list')
         else:
@@ -63,11 +70,15 @@ class UpdateUserView(views.View):
         user = UserModel.objects.get(id=id)
         user_form = UserForm(instance=user)
         profile_form = ProfileForm(instance=user.profile)
+        user_groups = Group.objects.filter(users__pk=user.id)
+        not_user_groups = Group.objects.all().exclude(users__pk=user.id)
         context = {
             'user': user,
             'action': self.action,
             'user_form': user_form,
-            'profile_form': profile_form
+            'profile_form': profile_form,
+            'user_groups': user_groups,
+            'not_user_groups': not_user_groups
         }
         return render(request, self.template_name, context)
 
@@ -78,6 +89,12 @@ class UpdateUserView(views.View):
         if edit_user_form.is_valid() and edit_profile_form.is_valid():
             edit_user_data = edit_user_form.save()
             edit_profile_data = edit_profile_form.save()
+            user_updated = UserModel.objects.get(pk=id)
+            groups_id = request.POST.getlist('groups')
+            user_updated.groups.clear()
+            for group_id in groups_id:
+                group = Group.objects.get(pk=group_id)
+                user_updated.groups.add(group)
             messages.success(request, 'Usuario actualizado exitósamente!')
             return redirect('user:detail', id)
         else:
@@ -99,3 +116,10 @@ def DeleteUserView(request, id):
     user.delete()
     messages.success(request, 'Usuario eliminado')
     return redirect('user:list')
+
+def RemoveGroup(request, id):
+    user = UserModel.objects.get(pk=id)
+    group_id = request.POST.get('group_id')
+    group = Group.objects.get(pk=group_id)
+    user.groups.remove(group)
+    return redirect('user:detail', user.id)

@@ -72,9 +72,14 @@ class UpdateGroup(views.View):
             }
             return render(request, self.template_name, context)
 
-def DeleteUser(request, id):
+def DeleteGroup(request, id):
+    group = Group.objects.get(pk=id)
+    group.delete()
+    return redirect('groups:list')
+
+def RemoveUser(request, id):
+    group = Group.objects.get(pk=id)
     user_id = request.POST.get('user_id')
     user = UserModel.objects.get(pk=user_id)
-    group = Group.objects.get(pk=id)
     group.users.remove(user)
     return redirect('groups:detail', group.id)
